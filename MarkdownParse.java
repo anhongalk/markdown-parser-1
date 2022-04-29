@@ -26,10 +26,21 @@ public class MarkdownParse {
 
             int openBracket2 = markdown.indexOf("[", closeBracket);
             int closeBracket2 = markdown.indexOf("[", openBracket2);
+            int openBracket3 = markdown.indexOf("[", closeBracket2);
+            int closeBracket3 = markdown.indexOf("[", openBracket3);  
+            int openBracket4 = markdown.indexOf("(", closeBracket3);
+            int closeBracket4 = markdown.indexOf(")", openBracket4);    
+   
             
             if (openBracket == -1 || closeBracket == -1) {
                 toReturn.add(markdown.substring(openParen2 + 1, closeParen2));
                 toReturn.add(markdown.substring(openParen4 + 1, closeParen4));
+                break;
+            }
+
+            if (openParen == -1 || closeParen == -1) {
+                toReturn.add(markdown.substring(openBracket2 + 1, closeBracket2));
+                toReturn.add(markdown.substring(openBracket4 + 1, closeBracket4));
                 break;
             }
             
