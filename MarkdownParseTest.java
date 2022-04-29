@@ -7,51 +7,44 @@ import java.util.ArrayList;
 
 public class MarkdownParseTest {
     
-    public static ArrayList<String> getLinks(String markdown) {
-        ArrayList<String> toReturn = new ArrayList<>();
-        // find the next [, then find the ], then find the (, then read link upto next )
-        int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
-            int openBracket = markdown.indexOf("[", currentIndex);
-            int closeBracket = markdown.indexOf("]", openBracket);
-            int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-
-            
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
-
-        }
-
-        return toReturn;
-    }
-
-
-    public static String LinksToString(String file) throws IOException {
-        Path fileName = Path.of(file);
+    @Test
+    public void test1() throws IOException {
+        Path fileName = Path.of("test-file.md");
         String content = Files.readString(fileName);
-        ArrayList<String> links = getLinks(content);
-        return links.toString();
+        ArrayList<String> toReturn = MarkdownParse.getLinks(content);
+
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("https://something.com");
+        expected.add("some-thing.html");
+
+        assertEquals(expected, toReturn);
     }
 
     @Test
-    public void addition() {
-        assertEquals(2, 1 + 1);
-    }
+    public void test2() throws IOException {
+        Path fileName = Path.of("test-file2.md");
+        String content = Files.readString(fileName);
+        ArrayList<String> toReturn = MarkdownParse.getLinks(content);
 
-    String expected = "[https://something.com, some-thing.html]";
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("https://something.com");
+        expected.add("some-thing.html");
+
+        assertEquals(expected, toReturn);
+    }
 
     @Test
-    public void getLinksTest1() throws IOException {
-        assertEquals(expected, LinksToString("test-file.md"));
+    public void test3() throws IOException {
+        Path fileName = Path.of("test-file3.md");
+        String content = Files.readString(fileName);
+        ArrayList<String> toReturn = MarkdownParse.getLinks(content);
+
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("https://something.com");
+        expected.add("some-thing.html");
+
+        assertEquals(expected, toReturn);
     }
-
-    @Test
-    public void getLinksTest2() throws IOException {
-        assertEquals(expected, LinksToString("test-file3.md"));
-    }
-
-
 }
 
 
