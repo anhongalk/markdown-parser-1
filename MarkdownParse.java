@@ -27,11 +27,11 @@ public class MarkdownParse {
             int openBracket2 = markdown.indexOf("[", closeBracket);
             int closeBracket2 = markdown.indexOf("[", openBracket2);
             
-            //if (openBracket == -1 || closeBracket == -1) {
-            //    toReturn.add(markdown.substring(openParen2 + 1, closeParen2));
-            //    toReturn.add(markdown.substring(openParen4 + 1, closeParen4));
-            //    break;
-            //}
+            if (openBracket == -1 || closeBracket == -1) {
+                toReturn.add(markdown.substring(openParen2 + 1, closeParen2));
+                toReturn.add(markdown.substring(openParen4 + 1, closeParen4));
+                break;
+            }
             
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
