@@ -33,6 +33,6 @@ jobs:
       
       - name: make test
         run: |
-          makefile
+          make
 
 
