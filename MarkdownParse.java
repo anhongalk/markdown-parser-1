@@ -16,41 +16,22 @@ public class MarkdownParse {
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
+            if(openBracket == -1){ break;}
+            if(openParen == -1){break;}
+            if(closeBracket == -1){break;}
+            if(closeParen == -1){break;}
 
-            int openParen2 = markdown.indexOf("(", closeParen);
-            int closeParen2 = markdown.indexOf(")", openParen2);
-            int openParen3 = markdown.indexOf("(", closeParen2);
-            int closeParen3 = markdown.indexOf(")", openParen3);
-            int openParen4 = markdown.indexOf("(", closeParen3);
-            int closeParen4 = markdown.indexOf(")", openParen4);
+            else{
 
-            int openBracket2 = markdown.indexOf("[", closeBracket);
-            int closeBracket2 = markdown.indexOf("[", openBracket2);
-            int openBracket3 = markdown.indexOf("[", closeBracket2);
-            int closeBracket3 = markdown.indexOf("[", openBracket3);  
-            int openBracket4 = markdown.indexOf("(", closeBracket3);
-            int closeBracket4 = markdown.indexOf(")", openBracket4);    
-   
-            
-            if (openBracket == -1 || closeBracket == -1) {
-                toReturn.add(markdown.substring(openParen2 + 1, closeParen2));
-                toReturn.add(markdown.substring(openParen4 + 1, closeParen4));
-                break;
+                if(markdown.substring(closeBracket, openParen+1).equals("](")){
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+                }
+
             }
-
-            if (openParen == -1 || closeParen == -1) {
-                toReturn.add(markdown.substring(openBracket2 + 1, closeBracket2));
-                toReturn.add(markdown.substring(openBracket4 + 1, closeBracket4));
-                break;
-            }
-            
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
-
         }
 
         return toReturn;
-
     }
 
 
@@ -59,5 +40,7 @@ public class MarkdownParse {
         String content = Files.readString(fileName);
         ArrayList<String> links = getLinks(content);
 	    System.out.println(links);
+
+        System.out.println("Done!");
     }
 }
