@@ -1,3 +1,5 @@
+
+   
 //https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
 
 import java.io.IOException;
@@ -11,53 +13,39 @@ public class MarkdownParse {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
+        while (currentIndex < markdown.length()) {
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
 
-            int openParen2 = markdown.indexOf("(", closeParen);
-            int closeParen2 = markdown.indexOf(")", openParen2);
-            int openParen3 = markdown.indexOf("(", closeParen2);
-            int closeParen3 = markdown.indexOf(")", openParen3);
-            int openParen4 = markdown.indexOf("(", closeParen3);
-            int closeParen4 = markdown.indexOf(")", openParen4);
-
-            int openBracket2 = markdown.indexOf("[", closeBracket);
-            int closeBracket2 = markdown.indexOf("[", openBracket2);
-            int openBracket3 = markdown.indexOf("[", closeBracket2);
-            int closeBracket3 = markdown.indexOf("[", openBracket3);  
-            int openBracket4 = markdown.indexOf("(", closeBracket3);
-            int closeBracket4 = markdown.indexOf(")", openBracket4);    
-   
-            
-            if (openBracket == -1 || closeBracket == -1) {
-                toReturn.add(markdown.substring(openParen2 + 1, closeParen2));
-                toReturn.add(markdown.substring(openParen4 + 1, closeParen4));
-                break;
-            }
 
             if (openParen == -1 || closeParen == -1) {
-                toReturn.add(markdown.substring(openBracket2 + 1, closeBracket2));
-                toReturn.add(markdown.substring(openBracket4 + 1, closeBracket4));
+                System.out.println("Error, invalid input: missing \"()\"");
                 break;
-            }
+             }
             
+            if (openBracket == -1 || closeBracket == -1) {
+                System.out.println("Error, invalid input: missing \"[]\"");
+                break;
+             }
+             
+            if (closeBracket + 1 != openParen) {
+                System.out.println("Space in between the \"[] ()\"");
+                break;
+             }
+
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
-
         }
 
         return toReturn;
-
     }
-
 
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
         String content = Files.readString(fileName);
         ArrayList<String> links = getLinks(content);
-	    System.out.println(links);
+        System.out.println(links);
     }
 }
