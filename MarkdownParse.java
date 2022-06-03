@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MarkdownParse {
+    
+
 
     static int findCloseParen(String markdown, int openParen) {
         int closeParen = openParen + 1;
@@ -31,20 +33,28 @@ public class MarkdownParse {
     }
     public static Map<String, List<String>> getLinks(File dirOrFile) throws IOException {
         Map<String, List<String>> result = new HashMap<>();
+        int count = 0;
         if(dirOrFile.isDirectory()) {
             for(File f: dirOrFile.listFiles()) {
                 result.putAll(getLinks(f));
+                //count++;
             }
+                            count++;
+
+            System.out.println(count);
             return result;
         }
         else {
             Path p = dirOrFile.toPath();
             int lastDot = p.toString().lastIndexOf(".");
             if(lastDot == -1 || !p.toString().substring(lastDot).equals(".md")) {
+                //count++;
                 return result;
             }
             ArrayList<String> links = getLinks(Files.readString(p));
             result.put(dirOrFile.getPath(), links);
+                                       // System.out.println(count);
+
             return result;
         }
     }
@@ -53,6 +63,7 @@ public class MarkdownParse {
         // find the next [, then find the ], then find the (, then take up to
         // the next )
         int currentIndex = 0;
+        int count = 0;
         while(currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
             int nextCodeBlock = markdown.indexOf("\n```");
@@ -73,17 +84,26 @@ public class MarkdownParse {
             }
             String potentialLink = markdown.substring(openParen + 1, closeParen).trim();
             if(potentialLink.indexOf(" ") == -1 && potentialLink.indexOf("\n") == -1) {
+
                 toReturn.add(potentialLink);
                 currentIndex = closeParen + 1;
+
             }
             else {
                 currentIndex = currentIndex + 1;
+count++;
+                                          System.out.println(count);
+
+
             }
         }
+
+
         return toReturn;
     }
     public static void main(String[] args) throws IOException {
-        Path fileName = Path.of(args[0]);
+         getLinks(new File("test-files/"));
+         Path fileName = Path.of(args[1]);
         String contents = Files.readString(fileName);
         ArrayList<String> links = getLinks(contents);
         System.out.println(links);
